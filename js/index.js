@@ -1,3 +1,4 @@
+
 var CONTRACT_ADDRESS = '0xaFA7E0101cAc99c31AcD57136C5095A04D5207a8';
 
 var referrer = '0xf5BD2f73A81C582d8D3D8d8e3A0feA12877492fe'
@@ -598,54 +599,254 @@ var TokenPrice = 0;
 var affiliate = 0;
 
 
+/**
+ * Example JavaScript code that interacts with the page and Web3 wallets
+ */
+
+// Unpkg imports
+const Web3Modal = window.Web3Modal.default;
+const WalletConnectProvider = window.WalletConnectProvider.default;
+const Fortmatic = window.Fortmatic;
+const evmChains = window.evmChains;
+
+// Web3modal instance
+let web3Modal
+
+// Chosen wallet provider given by the dialog window
+let provider;
+
+// Address of the selected account
+let selectedAccount;
 
 
-async function Connect() {
-    if (window.ethereum) {
-        window.web3 = new Web3(ethereum)
-        try {
-            await ethereum.enable()
+/**
+ * Setup the orchestra
+ */
+function init() {
 
-            let accounts = await web3.eth.getAccounts()
-            currentAddr = accounts[0]
-            console.log(currentAddr)
-            runAPP()
-            return
-        } catch (error) {
-            console.error(error)
+    console.log("Initializing example");
+    console.log("WalletConnectProvider is", WalletConnectProvider);
+    // console.log("Fortmatic is", Fortmatic);
+    console.log("window.web3 is", window.web3, "window.ethereum is", window.ethereum);
+
+    // Check that the web page is run in a secure context,
+    // as otherwise MetaMask won't be available
+    // if (location.protocol !== 'https:') {
+    //     // https://ethereum.stackexchange.com/a/62217/620
+    //     const alert = document.querySelector("#alert-error-https");
+    //     alert.style.display = "block";
+    //     document.querySelector("#connect-btn1").setAttribute("disabled", "disabled")
+    //     return;
+    // }
+
+    // Tell Web3modal what providers we have available.
+    // Built-in web browser provider (only one can exist as a time)
+    // like MetaMask, Brave or Opera is added automatically by Web3modal
+
+
+    const providerOptions = {
+        walletconnect: {
+            display: {
+                logo: "https://docs.walletconnect.com/img/walletconnect-logo.svg",
+                name: "Mobile",
+                description: "Scan qrcode with your mobile wallet"
+            },
+            package: WalletConnectProvider,
+            options: {
+                // Mikko's test key - don't copy as your mileage may vary
+                infuraId: "f64d0042bdc94576a9f4d133639596b6",
+                rpc: {
+                    338: "https://cronos-testnet-3.crypto.org:8545/",
+                    1: "https://mainnet.infura.io/v3/" + 'f64d0042bdc94576a9f4d133639596b6',
+                    42: "https://kovan.infura.io/v3/" + 'f64d0042bdc94576a9f4d133639596b6',
+                    137: "https://polygon-mainnet.infura.io/v3/" + 'f64d0042bdc94576a9f4d133639596b6',
+                },
+                chainId: 338,
+            }
+
         }
-    } else if (window.web3) {
-        window.web3 = new Web3(web3.currentProvider)
 
-        let accounts = await web3.eth.getAccounts()
-        currentAddr = accounts[0]
-        console.log(currentAddr)
-        runAPP()
-        return
+
+    };
+
+
+    web3Modal = new Web3Modal({
+        cacheProvider: false, // optional
+        providerOptions, // required
+        disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+    });
+
+    console.log("Web3Modal instance is", web3Modal);
+
+}
+
+
+/**
+ * Kick in the UI action after Web3modal dialog has chosen a provider
+ */
+async function fetchAccountData() {
+
+    // Get a Web3 instance for the wallet
+    const web3 = new Web3(provider);
+    if (contract) {
+        web3.eth.getAccounts().then(res => {
+            currentAddr = res[0]
+        })
+
+        $("#connect-btn1").text(currentAddr)
+
+        getContractBalance();
+        web3.eth.getBalance(currentAddr).then(bal => {
+            bal = web3.utils.fromWei(bal);
+            bal = (Math.round(bal * 100) / 100).toFixed(2);
+            $("#walletBalance").text(bal + " CRO")
+        })
+        getFishermen(currentAddr)
+        getRewards(currentAddr)
     }
-    //setTimeout(checkForBinanceChain, 1500)
-}
-async function checkForBinanceChain() {
-    try {
-        await window.BinanceChain.enable()
-        console.log(typeof (window.BinanceChain))
-        if (window.BinanceChain) {
-            console.log('BinanceChain')
-            await BinanceChain.enable()
-            window.web3 = new Web3(window.BinanceChain)
-            let accounts = await web3.eth.getAccounts()
-            currentAddr = accounts[0]
 
-            console.log(contract)
-            runAPP()
-            return
-        }
-    } catch (e) { }
+
 }
+
+
+
+/**
+ * Fetch account data for UI when
+ * - User switches accounts in wallet
+ * - User switches networks in wallet
+ * - User connects wallet initially
+ */
+async function refreshAccountData() {
+
+
+    // Disable button while UI is loading.
+    // fetchAccountData() will take a while as it communicates
+    // with Ethereum node via JSON-RPC and loads chain data
+    // over an API call.
+    document.querySelector("#connect-btn1").setAttribute("disabled", "disabled")
+    await fetchAccountData(provider);
+    document.querySelector("#connect-btn1").removeAttribute("disabled")
+}
+
+
+/**
+ * Connect wallet button pressed.
+ */
+async function onConnect() {
+
+    console.log("Opening a dialog", web3Modal);
+    try {
+        provider = await web3Modal.connect();
+        runAPP();
+        fetchAccountData();
+
+    } catch (e) {
+        console.log("Could not get a wallet connection", e);
+        return;
+    }
+
+    // Subscribe to accounts change
+    provider.on("accountsChanged", (accounts) => {
+        fetchAccountData();
+    });
+
+    // Subscribe to chainId change
+    provider.on("chainChanged", (chainId) => {
+        fetchAccountData();
+    });
+
+    // Subscribe to networkId change
+    provider.on("networkChanged", (networkId) => {
+        fetchAccountData();
+    });
+
+    await refreshAccountData();
+}
+
+/**
+ * Disconnect wallet button pressed.
+ */
+async function onDisconnect() {
+
+    console.log("Killing the wallet connection", provider);
+
+    // TODO: Which providers have close method?
+    if (provider.close) {
+        await provider.close();
+
+        // If the cached provider is not cleared,
+        // WalletConnect will default to the existing session
+        // and does not allow to re-scan the QR code with a new wallet.
+        // Depending on your use case you may want or want not his behavir.
+        await web3Modal.clearCachedProvider();
+        provider = null;
+    }
+
+    selectedAccount = null;
+
+
+}
+
+
+/**
+ * Main entry point.
+ */
+window.addEventListener('load', async () => {
+    init();
+    document.querySelector("#connect-btn1").addEventListener("click", onConnect);
+    // document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
+});
+
+
+
+// async function Connect() {
+//     if (window.ethereum) {
+//         window.web3 = new Web3(ethereum)
+//         try {
+//             await ethereum.enable()
+
+//             let accounts = await web3.eth.getAccounts()
+//             currentAddr = accounts[0]
+//             console.log(currentAddr)
+//             runAPP()
+//             return
+//         } catch (error) {
+//             console.error(error)
+//         }
+//     } else if (window.web3) {
+//         window.web3 = new Web3(web3.currentProvider)
+
+//         let accounts = await web3.eth.getAccounts()
+//         currentAddr = accounts[0]
+//         console.log(currentAddr)
+//         runAPP()
+//         return
+//     }
+//     //setTimeout(checkForBinanceChain, 1500)
+// }
+// async function checkForBinanceChain() {
+//     try {
+//         await window.BinanceChain.enable()
+//         console.log(typeof (window.BinanceChain))
+//         if (window.BinanceChain) {
+//             console.log('BinanceChain')
+//             await BinanceChain.enable()
+//             window.web3 = new Web3(window.BinanceChain)
+//             let accounts = await web3.eth.getAccounts()
+//             currentAddr = accounts[0]
+
+//             console.log(contract)
+//             runAPP()
+//             return
+//         }
+//     } catch (e) { }
+// }
 
 async function runAPP() {
-    let networkID = await web3.eth.net.getId()
-    if (networkID == 25) { // 56 - BSC Live. 97 -- BSC Test
+    const web3 = new Web3(provider);
+    let networkID = await web3.eth.net.getId();
+    console.log(networkID);
+    if (networkID == 338) { // 56 - BSC Live. 97 -- BSC Test
         contract = await new web3.eth.Contract(ABI, CONTRACT_ADDRESS)
         console.log(contract)
     }
@@ -660,22 +861,13 @@ setInterval(() => {
 
 setInterval(() => {
     if (contract) {
+        const web3 = new Web3(provider);
+
         web3.eth.getAccounts().then(res => {
             currentAddr = res[0]
         })
 
-        var connectedAddr = currentAddr[0] +
-            currentAddr[1] +
-            currentAddr[2] +
-            currentAddr[3] +
-            currentAddr[4] + '...' +
-            currentAddr[currentAddr.length - 5] +
-            currentAddr[currentAddr.length - 4] +
-            currentAddr[currentAddr.length - 3] +
-            currentAddr[currentAddr.length - 2] +
-            currentAddr[currentAddr.length - 1]
-
-        $("#connect-btn1").text(connectedAddr)
+        $("#connect-btn1").text(currentAddr)
 
         getContractBalance();
         web3.eth.getBalance(currentAddr).then(bal => {
@@ -696,45 +888,63 @@ function approve() {
 }
 
 function stakeBNB() {
-    if (contract) {
-        var amount = document.getElementById("app__inputbnb").value;
-        amount = web3.utils.toWei(String(amount), 'ether')
+    try {
+        if (contract) {
+            const web3 = new Web3(provider);
+            var amount = document.getElementById("app__inputbnb").value;
+            amount = web3.utils.toWei(String(amount), 'ether')
 
-        contract.methods.fabricateTime(upline/*, (trxspenddoc.value*1e9)*/)
-            .send({
-                value: amount,
-                from: currentAddr,
-                gasPrice: gasPrice,
-            })
+            contract.methods.fabricateTime(upline/*, (trxspenddoc.value*1e9)*/)
+                .send({
+                    value: amount,
+                    from: currentAddr,
+                    gasPrice: gasPrice,
+                })
 
+        }
+    } catch (error) {
+        console.log(error)
+        // document.querySelector('#alert-error-https').innerHTML(error);
     }
+
 }
 
 function sellFish() {
-    if (contract) {
-        contract.methods.desyncTime()
-            .send({
-                // value: amount,
-                from: currentAddr,
-                gasPrice: gasPrice,
-            })
+    try {
+        if (contract) {
+            contract.methods.desyncTime()
+                .send({
+                    // value: amount,
+                    from: currentAddr,
+                    gasPrice: gasPrice,
+                })
 
+        }
+    } catch (error) {
+        console.log(error)
+        // document.querySelector('#alert-error-https').innerHTML(error);
     }
 }
 
 function compound() {
-    if (contract) {
-        contract.methods.syncTKeepers(upline)
-            .send({
-                // value: amount,
-                from: currentAddr,
-                gasPrice: gasPrice,
-            })
+    try {
+        if (contract) {
+            contract.methods.syncTKeepers(upline)
+                .send({
+                    // value: amount,
+                    from: currentAddr,
+                    gasPrice: gasPrice,
+                })
 
+        }
+    } catch (error) {
+        console.log(error)
+        // document.querySelector('#alert-error-https').innerHTML(error);
     }
 }
 
 function getContractBalance() {
+    const web3 = new Web3(provider);
     contract.methods.getBalance().call().then(res => {
         res = web3.utils.fromWei(res);
         res = (Math.round(res * 100) / 100).toFixed(2);
@@ -745,14 +955,16 @@ function getContractBalance() {
 }
 
 function getFishermen(currentAddr) {
+
     contract.methods.getMyKeepers(currentAddr).call().then(res => {
         res = (Math.round(res * 100) / 100).toFixed(2);
-        $("#yourFishermen").text(res + " KEEPERS");
+        $("#yourFishermen").text(res + " BAKERS");
         console.log(res);
     })
 }
 
 function getRewards(currentAddr) {
+    const web3 = new Web3(provider);
     contract.methods.getMyTime(currentAddr).call().then(res => {
         res = web3.utils.fromWei(res);
         fix1 = 4910000000
@@ -774,6 +986,7 @@ function calcuate(number) {
 }
 
 function spendLimit(callback) {
+    const web3 = new Web3(provider);
     tokenContract.methods.allowance(currentAddr, contract).call().then(result => {
         callback(web3.utils.fromWei(result));
     }).catch((err) => {
@@ -782,6 +995,7 @@ function spendLimit(callback) {
 }
 
 function calculateprinter(anzahl) {
+    const web3 = new Web3(provider);
     tokenContract.methods.allowance(currentAddr, contract).call().then(result => {
         callback(web3.utils.fromWei(result));
     }).catch((err) => {
@@ -790,6 +1004,7 @@ function calculateprinter(anzahl) {
 }
 
 function userBalance(callback) {
+    const web3 = new Web3(provider);
     tokenContract.methods.balanceOf(currentAddr).call().then(result => {
         var amt = web3.utils.fromWei(result)
         // console.log("balance" + amt)
@@ -801,16 +1016,3 @@ function userBalance(callback) {
 }
 
 
-function copyToClipboard(element) {
-    var $temp = $("<input>");
-    $("body").append($temp);
-    $temp.val($(element).val()).select();
-    document.execCommand("copy");
-    $temp.remove();
-    showAlert('Successfuly copied', 'success')
-}
-
-/*$.getJSON( "https://api.pancakeswap.info/api/v2/tokens/0xc8AE7ded8b33ea0Da0d7c7FC6FEd35e3C1822be0", function( data ) {
-   $("#tpg-price").text((data["data"]["price"]*100).toFixed(3));
-    console.log(data["data"]["price"]);
-});*/
