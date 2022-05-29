@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="time.png" />
+    <meta name="description" content="A Locked CRO Staking Pool. Hire Bakers & Bake BUNS Daily" />
+    <meta property="og:image" content="https://i.imgur.com/DGZd5O4.png" />
+    <title>BakedBuns.Farm</title>
+    <link rel="stylesheet" href="/App.css">
+    <link rel="stylesheet" href="/index.css">
+    <script src="js/lib/jquery-3.6.0.min.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/web3.min.js"></script>
+
+</head>
+
+<body>
+    <div class="app">
+
+        <div class="app__nav">
+            <img class="app__logo" src="img/Bakedbuns-logo.png" alt="Baked Buns Farm" />
+        </div>
+
+        <div class="app__topinfobar">
+            <a class="app__whitepaper" href="https://docs.bakedbuns.farm/" target="_blank"
+                rel="noreferrer">Whitepaper</a>
+        </div>
+
+        <div class="app__main">
+            <button class="app__walletconnect" onclick="Connect()" id="connect-btn1">Connect</button>
+
+            <h2 style="color: white;">BakedBuns.Farm <span id="countdown"></span></h2>
+            <br>
+            <br>
+
+            <h6 class="app__heading">Hire TimeKeepers. Earn <span>CRO</span>. Repeat</h6>
+
+            <div class="app__interact">
+                <div class="app__interactmargin">
+                    <div class="app__interactstats">
+                        <div class="app__interactstatsdata">
+                            <p>Contract</p>
+                            <h5 id="contractBalance">0 CRO</h5>
+                        </div>
+
+                        <div class="app__interactstatsdata">
+                            <p>Wallet</p>
+                            <h5 id="walletBalance">0 CRO</h5>
+                        </div>
+
+                        <div class="app__interactstatsdata">
+                            <p>Bakers:</p>
+                            <h5 id="yourFishermen">0 TKS</h5>
+                        </div>
+                    </div>
+
+                    <div class="app__inputcontainer">
+                        <input class="app__inputbnb" type="number" id="app__inputbnb" />
+                        <div class="app__inputbnbsymbol">
+                            <p>CRO</p>
+                        </div>
+                    </div>
+
+                    <button class="app__minebtn" onclick="stakeBNB()">Hire Bakers</button>
+
+                    <div class="app__divider"></div>
+
+                    <div class="app__interactstatsreward">
+                        <p>Your Rewards</p>
+                        <h5 id="yourRewards">0 CRO</h5>
+                    </div>
+
+                    <div class="app__rewards">
+                        <button class="app__rewardsbtn" onclick="compound()">Bake</button>
+                        <button class="app__rewardsbtn" onclick="sellFish()">Get BUNS</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="app__statistics">
+                <div class="app__statisticsmargin">
+                    <h5 class="app__statisticshead">Statistics</h5>
+
+                    <div class="app__statisticsdivider"></div>
+
+                    <div class="app__statisticsinfo">
+                        <p>Daily Return</p>
+                        <p>6%</p>
+                    </div>
+
+                    <div class="app__statisticsinfo">
+                        <p>APR</p>
+                        <p>2,190%</p>
+                    </div>
+
+                    <div class="app__statisticsinfo">
+                        <p>Tax</p>
+                        <p>3%</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="app__referral">
+                <h5>Referral Link</h5>
+
+                <input class="app__referralinput" id="refString" type="text" readOnly value="Connect wallet to see." />
+
+                <p>Earn 12% of the CRO used to Deposit<br /> from anyone who uses your referral link</p>
+            </div>
+        </div>
+
+        <div class="app__socials">
+            <a href="https://cronoscan.com/address/0xaFA7E0101cAc99c31AcD57136C5095A04D5207a8" target="_blank"
+                rel="noreferrer" class="app__socialslinks"><img src="img/scan.png" alt="BscScan Social" /></a>
+            <a href="https://t.me/" target="_blank" rel="noreferrer" class="app__socialslinks"><img
+                    src="img/telegram.png" alt="Telegram Social" /></a>
+            <a href="https://discord.gg/" target="_blank" rel="noreferrer" class="app__socialslinks"><img
+                    src="img/discord.png" alt="Discord Social" /></a>
+        </div>
+    </div>
+
+    <script>
+        var countDownDate = new Date("June 1 2022 12:00:00 GMT+00:00").getTime();
+        var x = setInterval(function () {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("countdown").innerHTML = "opens in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "is live now";
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>
