@@ -20,7 +20,8 @@
     <div class="app">
 
         <div class="app__nav">
-            <img class="app__logo" src="img/Bakedbuns-logo.png" alt="Baked Buns Farm" />
+            <img class="app__logo" src="img/Bakedbuns-logo.png" alt="Baked Buns Farm" /><br>
+            <img class="app__logo2" src="img/Bakedbuns-logo-text.png" alt="Baked Buns Farm" />
         </div>
 
         <div class="app__topinfobar">
@@ -31,11 +32,11 @@
         <div class="app__main">
             <button class="app__walletconnect" onclick="Connect()" id="connect-btn1">Connect</button>
 
-            <h2 style="color: white;">BakedBuns.Farm <span id="countdown"></span></h2>
+            <h2 class="app__heading2"><span id="countdown"></span></h2>
             <br>
             <br>
 
-            <h6 class="app__heading">Hire TimeKeepers. Earn <span>CRO</span>. Repeat</h6>
+            <h6 class="app__heading">Bake BUNS. Earn <span>CRO</span>. Repeat</h6>
 
             <div class="app__interact">
                 <div class="app__interactmargin">
@@ -52,7 +53,7 @@
 
                         <div class="app__interactstatsdata">
                             <p>Bakers:</p>
-                            <h5 id="yourFishermen">0 TKS</h5>
+                            <h5 id="yourFishermen">0 BKS</h5>
                         </div>
                     </div>
 
@@ -73,8 +74,8 @@
                     </div>
 
                     <div class="app__rewards">
-                        <button class="app__rewardsbtn" onclick="compound()">Bake</button>
-                        <button class="app__rewardsbtn" onclick="sellFish()">Get BUNS</button>
+                        <button class="app__rewardsbtn" onclick="compound()">Re-Bake</button>
+                        <button class="app__rewardsbtn" onclick="sellFish()">Redeem CRO</button>
                     </div>
                 </div>
             </div>
@@ -132,7 +133,7 @@
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById("countdown").innerHTML = "opens in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s " + "to go LIVE!";
             if (distance < 0) {
                 clearInterval(x);
                 document.getElementById("countdown").innerHTML = "is live now";

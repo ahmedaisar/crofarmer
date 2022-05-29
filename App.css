@@ -10,6 +10,12 @@
     align-items: center;
   }
 
+  .app__logo2 {
+    height: 100px;
+  }
+
+
+
 }
 
 .app {
@@ -25,6 +31,7 @@
   margin-top: 50px;
   margin-bottom: 30px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -33,17 +40,34 @@
   height: 350px;
 }
 
+.app__logo2 {
+  height: 50px;
+}
+
+
+.app__whitepaper {
+  color: var(--secondary-color);
+  text-decoration: none;
+
+}
+
 .app__main {
-  width: 400px;
+  width: calc(100% - 48px);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .app__heading {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 500;
-  color: white;
+  color: var(--secondary-color);
+  text-align: center;
+}
+
+.app__heading2 {
+  font-size: 20px;
+  color: var(--secondary-color);
   text-align: center;
 }
 
@@ -53,7 +77,7 @@
 
 .app__walletconnect {
   cursor: pointer;
-  color: white;
+  color: var(--primary-color);
   background-color: var(--secondary-color);
   height: 54px;
   border-radius: 10px;
@@ -74,7 +98,7 @@
 }
 
 .app__walletconnectdisabled {
-  color: white;
+  color: var(--primary-color);
   background-color: var(--secondary-color);
   height: 54px;
   border-radius: 10px;
@@ -129,7 +153,7 @@
 .app__interactstatsdata>p {
   font-weight: 400;
   font-size: 20px;
-  color: white;
+  color: #6d553b;
 }
 
 .app__interactstatsdata>h5 {
@@ -158,7 +182,7 @@
   border-radius: 10px 0 0 10px;
   width: 100%;
   padding-left: 10px;
-  color: white;
+  color: #6d553b;
   font-size: 24px;
   font-weight: 500;
 }
@@ -196,7 +220,7 @@
   outline: none;
   background-color: var(--secondary-color);
   border: none;
-  color: white;
+  color: var(--primary-color);
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
@@ -216,7 +240,7 @@
   outline: none;
   background-color: var(--secondary-color);
   border: none;
-  color: white;
+  color: var(--primary-color);
   font-weight: 500;
   font-size: 1rem;
   opacity: 50%;
@@ -225,7 +249,7 @@
 .app__divider {
   width: 100%;
   height: 1px;
-  background-color: white;
+  background-color: #6d553b;
   opacity: 20%;
   border-radius: 10px;
 }
@@ -242,7 +266,7 @@
 .app__interactstatsreward>p {
   font-weight: bolder;
   font-size: 20px;
-  color: white;
+  color: #6d553b;
 }
 
 .app__interactstatsreward>h5 {
@@ -261,7 +285,7 @@
 }
 
 .app__rewardsbtn {
-  color: white;
+  color: var(--primary-color);
   height: 54px;
   background-color: var(--secondary-color);
   font-size: 1rem;
@@ -283,7 +307,7 @@
 }
 
 .app__rewardsbtndisabled {
-  color: white;
+  color: var(--primary-color);
   height: 54px;
   background-color: var(--secondary-color);
   font-size: 1rem;
@@ -316,14 +340,14 @@
 }
 
 .app__statisticshead {
-  color: white;
+  color: #6d553b;
   font-size: 24px;
   font-weight: 500;
 }
 
 .app__statisticsdivider {
   width: 100%;
-  background-color: white;
+  background-color: #6d553b;
   opacity: 20%;
   height: 1px;
   margin-bottom: 16px;
@@ -340,7 +364,7 @@
 }
 
 .app__statisticsinfo>p {
-  color: white;
+  color: #6d553b;
   font-weight: 400;
   font-size: 18px;
 }
@@ -357,7 +381,7 @@
 }
 
 .app__referral>h5 {
-  color: white;
+  color: #6d553b;
   margin-top: 12px;
   font-size: 24px;
   font-weight: 500;
@@ -365,7 +389,7 @@
 
 .app__referral>p {
   text-align: center;
-  color: white;
+  color: #6d553b;
   font-weight: 400;
   font-size: 14px;
   margin-top: 10px;
@@ -381,7 +405,7 @@
   outline: none;
   background-color: inherit;
   border: 2px solid var(--secondary-color);
-  color: white;
+  color: #6d553b;
   font-weight: 400;
   font-size: 10px;
   margin-top: 10px;
@@ -394,7 +418,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #6d553b;
   border: 2px solid var(--secondary-color);
   border-radius: 10px;
   position: fixed;
@@ -418,8 +442,8 @@
   margin-bottom: 50px;
 }
 
-.app__whitepaper {
-  color: white;
+.app__#6d553bpaper {
+  color: #6d553b;
   font-size: 16px;
   font-weight: 500;
   text-decoration: none;
@@ -430,13 +454,13 @@
     linear-gradient(currentColor 0 0) bottom /var(--d, 0) 1px no-repeat;
 }
 
-.app__whitepaper:hover {
+.app__#6d553bpaper:hover {
   color: var(--secondary-color);
   --d: 100%;
 }
 
 .app__contestbutton {
-  color: white;
+  color: #6d553b;
   font-size: 16px;
   font-weight: 500;
   text-decoration: none;
@@ -481,7 +505,7 @@
 .app__socialslinks>img {
   height: 40px;
   transition: 350ms;
-  filter: invert(100%) sepia(0%) saturate(24%) hue-rotate(114deg) brightness(108%) contrast(108%);
+  filter: invert(20%) sepia(0%) saturate(24%) hue-rotate(114deg) brightness(108%) contrast(108%);
 }
 
 .app__socialslinks>img:hover {
@@ -524,19 +548,19 @@
 }
 
 .app__contestmodalmargin>h6>span {
-  color: white;
+  color: #6d553b;
   font-size: 14px;
   font-weight: 500;
 }
 
 .app__contestmodalmargin>p {
-  color: white;
+  color: #6d553b;
   font-size: 14px;
   margin-bottom: 30px;
 }
 
 .app__contestmodalmargin>p>a {
-  color: white;
+  color: #6d553b;
   font-size: 14px;
   font-weight: 400;
   text-decoration: none;
@@ -556,7 +580,7 @@
   outline: none;
   border: none;
   padding: 5px 10px;
-  color: white;
+  color: #6d553b;
   font-weight: 500;
   position: absolute;
   right: 20px;
