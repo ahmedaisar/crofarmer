@@ -656,7 +656,7 @@ function init() {
     web3Modal = new Web3Modal({
         cacheProvider: false, // optional
         providerOptions, // required
-        disableInjectedProvider: true, // optional. For MetaMask / Brave / Opera.
+        disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
     });
 
     console.log("Web3Modal instance is", web3Modal);
