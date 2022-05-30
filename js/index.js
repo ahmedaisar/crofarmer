@@ -634,17 +634,18 @@ function init() {
 
     const providerOptions = {
         walletconnect: {
-            display: {
-                logo: "https://docs.walletconnect.com/img/walletconnect-logo.svg",
-                name: "Mobile",
-                description: "Scan qrcode with your mobile wallet"
-            },
+            // display: {
+            //     logo: "https://docs.walletconnect.com/img/walletconnect-logo.svg",
+            //     name: "Mobile",
+            //     description: "Scan qrcode with your mobile wallet"
+            // },
             package: WalletConnectProvider,
             options: {
-                rpc: {
-                    25: "https://evm.cronos.org/",
-                },
-                chainId: 25,
+                infuraId: "f64d0042bdc94576a9f4d133639596b6",
+                // rpc: {
+                //     25: 'https://evm.cronos.org/'+ 'f64d0042bdc94576a9f4d133639596b6',
+                // },
+                // chainId: 25,
             }
 
         }
@@ -654,6 +655,7 @@ function init() {
 
 
     web3Modal = new Web3Modal({
+        network: 'mainnet',
         cacheProvider: false, // optional
         providerOptions, // required
         disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
@@ -829,7 +831,7 @@ async function runAPP() {
     const web3 = new Web3(provider);
     let networkID = await web3.eth.net.getId();
     console.log(networkID);
-    if (networkID == 338) { // 56 - BSC Live. 97 -- BSC Test
+    if (networkID == 25) { // 56 - BSC Live. 97 -- BSC Test
         contract = await new web3.eth.Contract(ABI, CONTRACT_ADDRESS)
         console.log(contract)
     }
