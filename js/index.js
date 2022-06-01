@@ -1,8 +1,8 @@
 
-var CONTRACT_ADDRESS = '0xd4Bd431fbe25A29AC9b283bb5e252B4512aF0065';
+var CONTRACT_ADDRESS = '0xD4491f152aE986CEaaa4b5D980A1065Ac2D7ebb1';
 
-var referrer = '0xf5BD2f73A81C582d8D3D8d8e3A0feA12877492fe'
-var upline = '0xf5BD2f73A81C582d8D3D8d8e3A0feA12877492fe'
+var referrer = '0x21D08fB1E3d21183b369994234b0fF72bd09309b'
+var upline = '0x21D08fB1E3d21183b369994234b0fF72bd09309b'
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),
