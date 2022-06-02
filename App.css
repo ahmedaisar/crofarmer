@@ -570,16 +570,9 @@
   transition: 350ms;
 }
 
-@media (min-width: 400px) {
 
-  .app {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: var(--primary-color);
-  }
+
+@media screen and (max-width: 300px) {
 
   .app__main {
     width: calc(100% - 48px);
@@ -595,8 +588,5 @@
   .app__logo2 {
     height: 50px;
   }
-
-
-
 
 }
