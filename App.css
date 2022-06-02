@@ -571,7 +571,8 @@
 }
 
 
-@media screen and (max-width: 499px) {
+@media only screen and (max-width: 400px),
+screen and (max-height: 500px) {
 
   .app__main {
     width: calc(100% - 48px);
