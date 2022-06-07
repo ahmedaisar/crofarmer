@@ -9,14 +9,28 @@
     <meta property="og:type" content="BakedBuns.Farm - A Locked CRO Staking Pool. Hire Bakers & Bake BUNS Daily" />
     <meta property="og:site_name" content="BakedBuns.Farm" />
     <meta property="og:url" content="https://www.bakedbuns.farm/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BakedBuns.Farm</title>
     <link rel="stylesheet" href="/App.css">
     <link rel="stylesheet" href="/index.css">
     <script src="js/lib/jquery-3.6.0.min.js"></script>
-
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-NV6FLWR');</script>
+    <!-- End Google Tag Manager -->
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NV6FLWR" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div class="app">
 
         <div class="app__nav">
@@ -34,8 +48,8 @@
 
         <div class="app__main">
             <button class="app__walletconnect" id="connect-btn1">Connect</button>
-
-            <!-- <h2 class="app__heading2"><span id="countdown"></span></h2>
+            <!--
+            <h2 class="app__heading2"><span id="countdown"></span></h2>
             <br>
             <br> -->
 
@@ -119,7 +133,7 @@
 
         <div class="app__socials">
             <a href="https://cronoscan.com/address/0xD4491f152aE986CEaaa4b5D980A1065Ac2D7ebb1" target="_blank"
-                rel="noreferrer" class="app__socialslinks"><img src="img/scan.png" alt="CRONOS Scan" /></a>
+                rel="noreferrer" class="app__socialslinks"><img src="img/scan.png" alt="CRONOSCAN" /></a>
             <a href="https://twitter.com/bakedbunsfarm" target="_blank" rel="noreferrer" class="app__socialslinks"><img
                     src="img/twitter.png" alt="Twitter Social" /></a>
             <a href="https://t.me/bakedbunsfarm" target="_blank" rel="noreferrer" class="app__socialslinks"><img
@@ -127,7 +141,6 @@
         </div>
     </div>
     <script type="text/javascript" src="https://www.unpkg.com/web3@1.7.3/dist/web3.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/deficonnect/dist/index.umd.js"></script>
     <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.7/dist/index.js"></script>
     <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
     <script type="text/javascript"
@@ -139,7 +152,7 @@
     <script src="js/script.js"></script>
     <!-- <script src="js/web3.min.js"></script> -->
     <!-- <script>
-        var countDownDate = new Date("June 1 2022 12:00:00 GMT+00:00").getTime();
+        var countDownDate = new Date("June 1 2022 12:01:00 GMT+00:00").getTime();
         var x = setInterval(function () {
             var now = new Date().getTime();
             var distance = countDownDate - now;
@@ -150,7 +163,7 @@
             document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s " + "to go LIVE!";
             if (distance < 0) {
                 clearInterval(x);
-                document.getElementById("countdown").innerHTML = "is live now";
+                document.getElementById("countdown").innerHTML = "is LIVE now!";
             }
         }, 1000);
     </script> -->
