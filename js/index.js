@@ -852,8 +852,10 @@ setTimeout(() => {
 setInterval(() => {
     if (contract) {
         const web3 = new Web3(provider);
-
-        
+        await web3.eth.getAccounts().then(res => {
+            currentAddr = res[0]
+        })
+         document.querySelector("#connect-btn1").innerHTML = currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3);
 
         getContractBalance();
         web3.eth.getBalance(currentAddr).then(bal => {
