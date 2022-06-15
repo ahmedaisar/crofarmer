@@ -856,8 +856,6 @@ setInterval(() => {
             currentAddr = res[0]
         })
 
-        $("#connect-btn1").text(currentAddr)
-
         getContractBalance();
         web3.eth.getBalance(currentAddr).then(bal => {
             bal = web3.utils.fromWei(bal);
@@ -868,7 +866,7 @@ setInterval(() => {
         getRewards(currentAddr)
     }
 
-}, 3000);
+}, 5000);
 
 
 
