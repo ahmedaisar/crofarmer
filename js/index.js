@@ -680,13 +680,12 @@ async function fetchAccountData() {
     const web3 = new Web3(provider);
     if (contract) {
         web3.eth.getAccounts().then(res => {
-            currentAddr = res[0];
-            
+            currentAddr = res[0]
         })
-        const accounts = await web3.eth.getAccounts();
-        currentAddr = accounts[0];
-        document.querySelector('#connect-btn1').innerHTML = currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3);
-         getContractBalance();
+
+        $("#connect-btn1").innerHtml = selectedAccount.substring(0, 3) + "..." + selectedAccount.substring(selectedAccount.length - 3);
+
+        getContractBalance();
         web3.eth.getBalance(currentAddr).then(bal => {
             bal = web3.utils.fromWei(bal);
             bal = (Math.round(bal * 100) / 100).toFixed(2);
@@ -850,20 +849,25 @@ setTimeout(() => {
     }
 }, 5000);
 
-// setInterval(() => {
-//     if (contract) {
+setInterval(() => {
+    if (contract) {
+        const web3 = new Web3(provider);
 
-//         getContractBalance();
-//         web3.eth.getBalance(currentAddr).then(bal => {
-//             bal = web3.utils.fromWei(bal);
-//             bal = (Math.round(bal * 100) / 100).toFixed(2);
-//             $("#walletBalance").text(bal + " CRO")
-//         })
-//         getFishermen(currentAddr)
-//         getRewards(currentAddr)
-//     }
+        web3.eth.getAccounts().then(res => {
+            currentAddr = res[0]
+        })
 
-// }, 5000);
+        getContractBalance();
+        web3.eth.getBalance(currentAddr).then(bal => {
+            bal = web3.utils.fromWei(bal);
+            bal = (Math.round(bal * 100) / 100).toFixed(2);
+            $("#walletBalance").text(bal + " CRO")
+        })
+        getFishermen(currentAddr)
+        getRewards(currentAddr)
+    }
+
+}, 10000);
 
 
 
@@ -886,7 +890,6 @@ function stakeBNB() {
                 })
 
         }
-         getContractBalance();
     } catch (error) {
         console.log(error)
         // document.querySelector('#alert-error-https').innerHTML(error);
@@ -905,7 +908,6 @@ function sellFish() {
                 })
 
         }
-       getContractBalance();
     } catch (error) {
         console.log(error)
         // document.querySelector('#alert-error-https').innerHTML(error);
@@ -923,7 +925,6 @@ function compound() {
                 })
 
         }
-         getContractBalance();
     } catch (error) {
         console.log(error)
         // document.querySelector('#alert-error-https').innerHTML(error);
@@ -1001,5 +1002,4 @@ function userBalance(callback) {
         console.log(err)
     });
 }
-
 
