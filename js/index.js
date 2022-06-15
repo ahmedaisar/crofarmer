@@ -680,9 +680,10 @@ async function fetchAccountData() {
     const web3 = new Web3(provider);
     if (contract) {
         web3.eth.getAccounts().then(res => {
-            currentAddr = res[0]
+            currentAddr = res[0];
+            $("#connect-btn1").html(currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3))
         })
-        $("#connect-btn1").html(currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3))
+        
 
         getContractBalance();
         web3.eth.getBalance(currentAddr).then(bal => {
