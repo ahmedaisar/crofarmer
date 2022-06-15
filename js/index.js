@@ -683,9 +683,10 @@ async function fetchAccountData() {
             currentAddr = res[0];
             
         })
-         
-        document.querySelector('#connect-btn1').innerHTML = currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3)
-        getContractBalance();
+        const accounts = await web3.eth.getAccounts();
+        currentAddr = accounts[0];
+        document.querySelector('#connect-btn1').innerHTML = currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3);
+        await getContractBalance();
         web3.eth.getBalance(currentAddr).then(bal => {
             bal = web3.utils.fromWei(bal);
             bal = (Math.round(bal * 100) / 100).toFixed(2);
@@ -885,7 +886,7 @@ function stakeBNB() {
                 })
 
         }
-        getContractBalance();
+        await getContractBalance();
     } catch (error) {
         console.log(error)
         // document.querySelector('#alert-error-https').innerHTML(error);
@@ -904,7 +905,7 @@ function sellFish() {
                 })
 
         }
-        getContractBalance();
+      await getContractBalance();
     } catch (error) {
         console.log(error)
         // document.querySelector('#alert-error-https').innerHTML(error);
@@ -922,7 +923,7 @@ function compound() {
                 })
 
         }
-        getContractBalance();
+        await getContractBalance();
     } catch (error) {
         console.log(error)
         // document.querySelector('#alert-error-https').innerHTML(error);
