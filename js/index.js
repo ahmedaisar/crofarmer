@@ -679,7 +679,7 @@ async function fetchAccountData() {
     // Get a Web3 instance for the wallet
     const web3 = new Web3(provider);
     if (contract) {
-        web3.eth.getAccounts().then(res => {
+        await web3.eth.getAccounts().then(res => {
             currentAddr = res[0]
         })
 
@@ -853,9 +853,7 @@ setInterval(() => {
     if (contract) {
         const web3 = new Web3(provider);
 
-        web3.eth.getAccounts().then(res => {
-            currentAddr = res[0]
-        })
+        
 
         getContractBalance();
         web3.eth.getBalance(currentAddr).then(bal => {
