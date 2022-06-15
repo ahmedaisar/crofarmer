@@ -681,10 +681,10 @@ async function fetchAccountData() {
     if (contract) {
         web3.eth.getAccounts().then(res => {
             currentAddr = res[0];
-            $("#connect-btn1").html(currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3))
+            
         })
-        
-
+         
+        document.querySelector('#connect-btn1').innerHTML = currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3)
         getContractBalance();
         web3.eth.getBalance(currentAddr).then(bal => {
             bal = web3.utils.fromWei(bal);
@@ -849,25 +849,20 @@ setTimeout(() => {
     }
 }, 5000);
 
-setInterval(() => {
-    if (contract) {
-        const web3 = new Web3(provider);
+// setInterval(() => {
+//     if (contract) {
 
-        web3.eth.getAccounts().then(res => {
-            currentAddr = res[0]
-        })
+//         getContractBalance();
+//         web3.eth.getBalance(currentAddr).then(bal => {
+//             bal = web3.utils.fromWei(bal);
+//             bal = (Math.round(bal * 100) / 100).toFixed(2);
+//             $("#walletBalance").text(bal + " CRO")
+//         })
+//         getFishermen(currentAddr)
+//         getRewards(currentAddr)
+//     }
 
-        getContractBalance();
-        web3.eth.getBalance(currentAddr).then(bal => {
-            bal = web3.utils.fromWei(bal);
-            bal = (Math.round(bal * 100) / 100).toFixed(2);
-            $("#walletBalance").text(bal + " CRO")
-        })
-        getFishermen(currentAddr)
-        getRewards(currentAddr)
-    }
-
-}, 5000);
+// }, 5000);
 
 
 
@@ -890,6 +885,7 @@ function stakeBNB() {
                 })
 
         }
+        getContractBalance();
     } catch (error) {
         console.log(error)
         // document.querySelector('#alert-error-https').innerHTML(error);
@@ -908,6 +904,7 @@ function sellFish() {
                 })
 
         }
+        getContractBalance();
     } catch (error) {
         console.log(error)
         // document.querySelector('#alert-error-https').innerHTML(error);
@@ -925,6 +922,7 @@ function compound() {
                 })
 
         }
+        getContractBalance();
     } catch (error) {
         console.log(error)
         // document.querySelector('#alert-error-https').innerHTML(error);
