@@ -683,7 +683,7 @@ async function fetchAccountData() {
             currentAddr = res[0]
         })
 
-        $("#connect-btn1").innerHtml = selectedAccount.substring(0, 3) + "..." + selectedAccount.substring(selectedAccount.length - 3);
+        $("#connect-btn1").text(selectedAccount.substring(0, 3) + "..." + selectedAccount.substring(selectedAccount.length - 3));
 
         getContractBalance();
         web3.eth.getBalance(currentAddr).then(bal => {
