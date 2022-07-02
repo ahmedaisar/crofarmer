@@ -727,7 +727,8 @@ async function fetchAccountData() {
         $.notify("Cound't make a connection.", {
             clickToHide: true,
             autoHide: true,
-            className: 'error',
+            style: 'buns',
+            className: 'supaBuns',
             globalPosition: 'bottom right'
           });
     }
@@ -774,7 +775,8 @@ async function onConnect() {
                 $.notify("Wrong network, switch to Cronos.", {
                     clickToHide: true,
                     autoHide: true,
-                    className: 'info',
+                    style: 'buns',
+                    className: 'supaBuns',
                     globalPosition: 'bottom right'
                   });
                 await switchNetwork();
