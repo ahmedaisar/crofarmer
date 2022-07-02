@@ -19,13 +19,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
 };
 
-var refurl = getUrlParameter('ref');
 
-if (refurl) {
-    localStorage.setItem('ref', refurl);
-}
-
-upline = localStorage.getItem('ref') ? localStorage.getItem('ref') : referrer;
 
 var ABI = [
     {
@@ -767,35 +761,8 @@ async function onConnect() {
     console.log("Opening a dialog", web3Modal);
     try {
 
-        if (typeof(window.ethereum) !== 'undefined') {
-            provider = await web3Modal.connect(); // use Metamask or whatever the dApp browser provides
-            const web3 = new Web3(provider);
-            const chainIdget = await web3.eth.getChainId();
-            if (chainIdget !== 25) {
-                $.notify("Wrong network, switch to Cronos.", {
-                    clickToHide: true,
-                    autoHide: true,
-                    style: 'buns',
-                    className: 'supaBuns',
-                    globalPosition: 'bottom right'
-                  });
-                await switchNetwork();
-            } else {
-            runAPP();
-            await fetchAccountData();
-            $.notify("Connecting..", {
-                clickToHide: true,
-                autoHide: true,
-                style: 'buns',
-                className: 'supaBuns',
-                globalPosition: 'bottom right',
-              });
-
-            }
-
-
-        } else {
-            provider = await web3Modal.connectTo('walletconnect');
+        
+            provider = await web3Modal.connect();
             const web3 = new Web3(provider);
             const chainIdget = await web3.eth.getChainId();
             if (chainIdget !== 25) {
@@ -819,7 +786,7 @@ async function onConnect() {
                   });
             }
 
-        }
+     
 
     } catch (e) {
         $.notify("Could not get a wallet connection.", {
@@ -925,6 +892,7 @@ async function runAPP() {
         contract = await new web3.eth.Contract(ABI, CONTRACT_ADDRESS)
         apprunning = true;
         await setBurnAmount();
+       
         console.log(contract)
     }
 }
