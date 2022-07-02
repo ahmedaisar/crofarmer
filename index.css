@@ -7,9 +7,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
-  --primary-color: #fff0b4;
-  --secondary-color: #6d553b;
+  color: #bfdfee !important;
+  --primary-color: #000b39;
+  --secondary-color: #002d74;
 
   font-family: 'Montserrat', sans-serif;
 }

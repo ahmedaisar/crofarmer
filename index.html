@@ -31,13 +31,15 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NV6FLWR" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <div class="app">
+    <div class="app" style="background: linear-gradient(to top, #000b39, #002d74);">
 
         <div class="app__nav">
             <img class="app__logo" src="img/Bakedbuns-logo.png" alt="Baked Buns Farm" /><br>
             <img class="app__logo2" src="img/Bakedbuns-logo-text.png" alt="Baked Buns Farm" />
         </div>
- 
+        <div class="alert alert-danger" id="alert-error-https" style="display: none">
+
+        </div>
 
         <div class="app__topinfobar">
             <a class="app__whitepaper" href="https://docs.bakedbuns.farm/" target="_blank"
@@ -49,13 +51,18 @@
 
 
 
-            <h6 class="app__heading">Bake BUNS. Earn <span>CRO</span>. Repeat</h6>
+            <h6 class="app__heading">INVEST $CRO & EARN 6% DAILY</h6>
 
-            <div class="app__interact">
+            <div class="app__interact" >
                 <div class="app__interactmargin">
+                    <div class="app__interactstatsdata" style="display: inline-block;">
+                        <h5 style="text-align: center; font-size: 25px;" id="supplyBalance">Connect wallet</h5>
+                       
+                    </div>
                     <div class="app__interactstats">
+                       
                         <div class="app__interactstatsdata">
-                            <p>Contract</p>
+                            <p>TVL</p>
                             <h5 id="contractBalance">0 CRO</h5>
                         </div>
 
@@ -65,13 +72,22 @@
                         </div>
 
                         <div class="app__interactstatsdata">
-                            <p>Bakers:</p>
+                            <p>Bakers</p>
                             <h5 id="yourFishermen">0 BKS</h5>
+                        </div>
+                        
+                        <div class="app__interactstatsdata">
+                            <p>Next Burn</p>
+                            <h5 id="nextBurn">Connect wallet</h5>
+                        </div>
+                        <div class="app__interactstatsdata">
+                            <p>Total Burned</p>
+                            <h5 id="totalBurned">Connect wallet</h5>
                         </div>
                     </div>
 
                     <div class="app__inputcontainer">
-                        <input class="app__inputbnb" type="number" id="app__inputbnb" />
+                        <input class="app__inputbnb" type="number" min="100" id="app__inputbnb" />
                         <div class="app__inputbnbsymbol">
                             <p>CRO</p>
                         </div>
@@ -147,23 +163,10 @@
     <!-- <script src="js/wallet-connect.js"></script> -->
     <script src="js/index.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/lib/notify.min.js"></script>
+    <script src="js/lib/wallet-sdk-bundle.js"></script>
     <!-- <script src="js/web3.min.js"></script> -->
-<!--     <script>
-        var countDownDate = new Date("June 1 2022 12:01:00 GMT+00:00").getTime();
-        var x = setInterval(function () {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s " + "to go LIVE!";
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("countdown").innerHTML = "is LIVE now!";
-            }
-        }, 1000);
-    </script> -->
+    
 
 </body>
 
