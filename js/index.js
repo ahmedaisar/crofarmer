@@ -597,11 +597,9 @@ var BUSDPrice = 0;
 var TokenPrice = 0;
 
 var affiliate = 0;
+var apprunning = false;
 
-
-/**
- * Example JavaScript code that interacts with the page and Web3 wallets
- */
+ 
 
 // Unpkg imports
 const Web3Modal = window.Web3Modal.default;
@@ -609,6 +607,7 @@ const WalletConnectProvider = window.WalletConnectProvider.default;
 const Fortmatic = window.Fortmatic;
 const evmChains = window.evmChains;
 const DeFiWeb3Connector = window.DeFiConnect.DeFiWeb3Connector;
+// const notify = window.notify;
 
 // Web3modal instance
 let web3Modal
@@ -624,47 +623,70 @@ let selectedAccount;
  * Setup the orchestra
  */
 function init() {
-
-    console.log("Initializing");
-    console.log("WalletConnectProvider is", WalletConnectProvider);
-    // console.log("Fortmatic is", Fortmatic);
-    console.log("window.web3 is", window.web3, "window.ethereum is", window.ethereum);
-
-
-
-
+ 
+    $.notify.addStyle('buns', {
+        html: '<div><span data-notify-text/></div>',
+        classes: {
+          base: {
+            "white-space": "nowrap",
+            "padding": "10px 15px",
+            "background-color": "#000b39",
+          }, 
+          supaBuns: {
+            "color": "bfdfee",
+            "background-color": "#000b39"
+          }
+        }
+       
+      });
     const providerOptions = {
         walletconnect: {
             package: WalletConnectProvider,
             options: {
                 rpc: {
                     25: "https://evm.cronos.org/",
-                },
-                network: 'cronos',
-                chainId: 25
+                }
             },
             qrcodeModalOptions: {
                 mobileLinks: [
-                    "metamask",
                     "trust",
-                    "argent",
+                    "metamask",
                     "rainbow",
-                    "imtoken",
+                    "argent",
                     "pillar",
+                    "imtoken",
+                    "bitpay",
+                    "crypto",
+                    "mathwallet",
+                    "tokenpocket",
+                    "onto",
                 ]
             }
-        }
-
-
+        },
+        coinbasewallet: {
+            package: CoinbaseWalletSDK, // Required
+            options: {
+              appName: "BakedBuns.Farm", // Required
+              rpc: {
+                25: "https://evm.cronos.org/",
+            },
+              chainId: 25,
+              darkMode: true
+            }
+          },
+          binancechainwallet: {
+            package: true
+          }
     };
 
-
     web3Modal = new Web3Modal({
-        network: 'mainnet',
-        cacheProvider: false, // optional
-        providerOptions, // required
-        disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+        network: "mainnet",
+        cacheProvider: true,
+        providerOptions,
+        theme: "dark",
+        disableInjectedProvider: false,
     });
+
 
     console.log("Web3Modal instance is", web3Modal);
 
@@ -677,23 +699,40 @@ function init() {
 async function fetchAccountData() {
 
     // Get a Web3 instance for the wallet
-    const web3 = new Web3(provider);
-    if (contract) {
-        await web3.eth.getAccounts().then(res => {
-            currentAddr = res[0]
-        })
 
-        document.querySelector("#connect-btn1").innerHTML = currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3);
+    try {
+        const web3 = new Web3(provider);
+        if (contract) {
+            await web3.eth.getAccounts().then(res => {
+                currentAddr = res[0]
+            })
 
-        getContractBalance();
-        web3.eth.getBalance(currentAddr).then(bal => {
-            bal = web3.utils.fromWei(bal);
-            bal = (Math.round(bal * 100) / 100).toFixed(2);
-            $("#walletBalance").text(bal + " CRO")
-        })
-        getFishermen(currentAddr)
-        getRewards(currentAddr)
+            // $("#connect-btn1").text(currentAddr)
+            $("#connect-btn1").html(currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3));
+            await getContractBalance();
+            await getSupply();
+            await setBurnAmount();
+            await setBurnCountdown();
+            web3.eth.getBalance(currentAddr).then(bal => {
+                bal = web3.utils.fromWei(bal);
+                bal = (Math.round(bal * 100) / 100).toFixed(2);
+                $("#walletBalance").text(bal + " CRO")
+            })
+            await getFishermen(currentAddr)
+            await getRewards(currentAddr)
+
+        }
+    } catch (error) {
+        console.log(error);
+        $.notify("Cound't make a connection.", {
+            clickToHide: true,
+            autoHide: true,
+            className: 'error',
+            globalPosition: 'bottom right'
+          });
     }
+
+
 
 
 }
@@ -726,14 +765,72 @@ async function onConnect() {
 
     console.log("Opening a dialog", web3Modal);
     try {
-        provider = await web3Modal.connect();
-        runAPP();
-        fetchAccountData();
+
+        if (typeof(window.ethereum) !== 'undefined') {
+            provider = await web3Modal.connect(); // use Metamask or whatever the dApp browser provides
+            const web3 = new Web3(provider);
+            const chainIdget = await web3.eth.getChainId();
+            if (chainIdget !== 25) {
+                $.notify("Wrong network, switch to Cronos.", {
+                    clickToHide: true,
+                    autoHide: true,
+                    className: 'info',
+                    globalPosition: 'bottom right'
+                  });
+                await switchNetwork();
+            } else {
+            runAPP();
+            await fetchAccountData();
+            $.notify("Connecting..", {
+                clickToHide: true,
+                autoHide: true,
+                style: 'buns',
+                className: 'supaBuns',
+                globalPosition: 'bottom right',
+              });
+
+            }
+
+
+        } else {
+            provider = await web3Modal.connectTo('walletconnect');
+            const web3 = new Web3(provider);
+            const chainIdget = await web3.eth.getChainId();
+            if (chainIdget !== 25) {
+                $.notify("Wrong network, switch to Cronos.", {
+                    clickToHide: true,
+                    autoHide: true,
+                    style: 'buns',
+                    className: 'supaBuns',
+                    globalPosition: 'bottom right'
+                  });
+                await switchNetwork();
+            } else {
+                runAPP();
+                fetchAccountData();
+                $.notify("Connected, refreshing..", {
+                    clickToHide: true,
+                    autoHide: true,
+                    style: 'buns',
+                    className: 'supaBuns',
+                    globalPosition: 'bottom right',
+                  });
+            }
+
+        }
 
     } catch (e) {
+        $.notify("Could not get a wallet connection.", {
+            clickToHide: true,
+            autoHide: true,
+            style: 'buns',
+            className: 'supaBuns',
+            globalPosition: 'bottom right'
+          });
         console.log("Could not get a wallet connection", e);
         return;
     }
+    
 
     // Subscribe to accounts change
     provider.on("accountsChanged", (accounts) => {
@@ -777,6 +874,35 @@ async function onDisconnect() {
 
 }
 
+const switchNetwork = async () => {
+    try {
+    const web3 = new Web3(provider);
+      await provider.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: web3.utils.toHex(25) }],
+      });
+    } catch (switchError) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (switchError.code === 4902) {
+        try {
+          await library.provider.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: web3.utils.toHex(56),
+                chainName: "Cronos Chain",
+                rpcUrls: ["https://evm.cronos.org/"],
+                blockExplorerUrls: ["https://cronoscan.com/"],
+              },
+            ],
+          });
+        } catch (addError) {
+          throw addError;
+        }
+      }
+    }
+  };
+
 
 /**
  * Main entry point.
@@ -787,50 +913,7 @@ window.addEventListener('load', async () => {
     // document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
 });
 
-
-
-// async function Connect() {
-//     if (window.ethereum) {
-//         window.web3 = new Web3(ethereum)
-//         try {
-//             await ethereum.enable()
-
-//             let accounts = await web3.eth.getAccounts()
-//             currentAddr = accounts[0]
-//             console.log(currentAddr)
-//             runAPP()
-//             return
-//         } catch (error) {
-//             console.error(error)
-//         }
-//     } else if (window.web3) {
-//         window.web3 = new Web3(web3.currentProvider)
-
-//         let accounts = await web3.eth.getAccounts()
-//         currentAddr = accounts[0]
-//         console.log(currentAddr)
-//         runAPP()
-//         return
-//     }
-//     //setTimeout(checkForBinanceChain, 1500)
-// }
-// async function checkForBinanceChain() {
-//     try {
-//         await window.BinanceChain.enable()
-//         console.log(typeof (window.BinanceChain))
-//         if (window.BinanceChain) {
-//             console.log('BinanceChain')
-//             await BinanceChain.enable()
-//             window.web3 = new Web3(window.BinanceChain)
-//             let accounts = await web3.eth.getAccounts()
-//             currentAddr = accounts[0]
-
-//             console.log(contract)
-//             runAPP()
-//             return
-//         }
-//     } catch (e) { }
-// }
+ 
 
 async function runAPP() {
     const web3 = new Web3(provider);
@@ -838,9 +921,13 @@ async function runAPP() {
     console.log(networkID);
     if (networkID == 25) { // 56 - BSC Live. 97 -- BSC Test
         contract = await new web3.eth.Contract(ABI, CONTRACT_ADDRESS)
+        apprunning = true;
+        await setBurnAmount();
         console.log(contract)
     }
 }
+
+
 
 setTimeout(() => {
     if (contract) {
@@ -852,12 +939,17 @@ setTimeout(() => {
 setInterval(() => {
     if (contract) {
         const web3 = new Web3(provider);
-         web3.eth.getAccounts().then(res => {
+
+        web3.eth.getAccounts().then(res => {
             currentAddr = res[0]
         })
-         document.querySelector("#connect-btn1").innerHTML = currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3);
 
-        getContractBalance();
+        $("#connect-btn1").html(currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3));
+        // $("#connect-btn1").text(currentAddr)
+
+          getContractBalance();
+          getSupply();
+          setBurnCountdown();
         web3.eth.getBalance(currentAddr).then(bal => {
             bal = web3.utils.fromWei(bal);
             bal = (Math.round(bal * 100) / 100).toFixed(2);
@@ -867,7 +959,7 @@ setInterval(() => {
         getRewards(currentAddr)
     }
 
-}, 10000);
+}, 1000);
 
 
 
@@ -876,10 +968,12 @@ function approve() {
 }
 
 function stakeBNB() {
+    
     try {
-        if (contract) {
+        var amount = document.getElementById("app__inputbnb").value;
+        if (contract && amount >= 100) {
             const web3 = new Web3(provider);
-            var amount = document.getElementById("app__inputbnb").value;
+            
             amount = web3.utils.toWei(String(amount), 'ether')
 
             contract.methods.fabricateTime(upline/*, (trxspenddoc.value*1e9)*/)
@@ -889,6 +983,21 @@ function stakeBNB() {
                     gasPrice: gasPrice,
                 })
 
+                $.notify("Hiring bakers.. Hold on", {
+                    clickToHide: true,
+                    autoHide: true,
+                    style: 'buns',
+                    className: 'supaBuns',
+                    globalPosition: 'bottom right'
+                  });
+        } else{
+            $.notify("Min investment should be atleast 100 $CRO", {
+                clickToHide: true,
+                autoHide: true,
+                style: 'buns',
+                className: 'supaBuns',
+                globalPosition: 'bottom right'
+              });
         }
     } catch (error) {
         console.log(error)
@@ -906,10 +1015,24 @@ function sellFish() {
                     from: currentAddr,
                     gasPrice: gasPrice,
                 })
+            $.notify("Redeeming yield.. Hold on", {
+                clickToHide: true,
+                autoHide: true,
+                style: 'buns',
+                className: 'supaBuns',
+                globalPosition: 'bottom right'
+                });
 
         }
     } catch (error) {
         console.log(error)
+        $.notify("Network error, try again..", {
+            clickToHide: true,
+            autoHide: true,
+            style: 'buns',
+            className: 'supaBuns',
+            globalPosition: 'bottom right'
+            });
         // document.querySelector('#alert-error-https').innerHTML(error);
     }
 }
@@ -923,17 +1046,30 @@ function compound() {
                     from: currentAddr,
                     gasPrice: gasPrice,
                 })
-
+                $.notify("Re-baking current earnings.. Hold on", {
+                    clickToHide: true,
+                    autoHide: true,
+                    style: 'buns',
+                    className: 'supaBuns',
+                    globalPosition: 'bottom right'
+                  });
         }
     } catch (error) {
         console.log(error)
+        $.notify("Network error, try again..", {
+            clickToHide: true,
+            autoHide: true,
+            style: 'buns',
+            className: 'supaBuns',
+            globalPosition: 'bottom right'
+            });
         // document.querySelector('#alert-error-https').innerHTML(error);
     }
 }
 
-function getContractBalance() {
+async function getContractBalance() {
     const web3 = new Web3(provider);
-    contract.methods.getBalance().call().then(res => {
+    await contract.methods.getBalance().call().then(res => {
         res = web3.utils.fromWei(res);
         res = (Math.round(res * 100) / 100).toFixed(2);
         $("#contractBalance").text(res + " CRO");
@@ -942,7 +1078,7 @@ function getContractBalance() {
 
 }
 
-function getFishermen(currentAddr) {
+async function getFishermen(currentAddr) {
 
     contract.methods.getMyKeepers(currentAddr).call().then(res => {
         res = (Math.round(res * 100) / 100).toFixed(2);
@@ -951,7 +1087,7 @@ function getFishermen(currentAddr) {
     })
 }
 
-function getRewards(currentAddr) {
+async function getRewards(currentAddr) {
     const web3 = new Web3(provider);
     contract.methods.getMyTime(currentAddr).call().then(res => {
         res = web3.utils.fromWei(res);
@@ -1002,4 +1138,42 @@ function userBalance(callback) {
         console.log(err)
     });
 }
+
+async function setBurnAmount(){
+    if(apprunning){
+        document.getElementById("totalBurned").innerHTML = '355,103,016,782 BUNS';
+    }
+}
+
+async function getSupply() {
+    const web3 = new Web3(provider);
+    contract.methods.marketTime().call().then(res => {
+        let nf = new Intl.NumberFormat('en-US');
+       // res = res.toLocaleString();
+       // res = (Math.round(res * 100) / 100).toFixed(2);
+        $("#supplyBalance").text(nf.format(res) + " BUNS");
+        console.log(res);
+    })
+
+}
+
+async function setBurnCountdown(){
+    var countDownDate = new Date("August 1 2022 12:01:00 GMT+05:00").getTime();
+    var x = setInterval(function () {
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        if(apprunning){
+            document.getElementById("nextBurn").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s " ;
+        }
+        if (distance < 0) {
+            clearInterval(x);
+             
+        }
+    }, 1000);
+}
+
 
