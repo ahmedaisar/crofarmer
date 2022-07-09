@@ -19,7 +19,11 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
 };
 
+var refurl = getUrlParameter('ref');
 
+if (refurl) {
+    localStorage.setItem('ref', refurl);
+}
 
 var ABI = [
     {
