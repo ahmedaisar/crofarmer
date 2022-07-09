@@ -930,7 +930,9 @@ setInterval(() => {
             $("#walletBalance").text(bal + " CRO")
         })
         getFishermen(currentAddr)
-        getRewards()
+        getRewards();
+        calculateBuns();
+        lastRebake();
     }
 
 }, 1000);
@@ -1154,6 +1156,72 @@ async function setBurnCountdown(){
              
         }
     }, 1000);
+}
+
+function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
+  }
+
+function calculateBuns() {
+    const web3 = new Web3(provider);
+       try {
+        if(contract){
+            let nf = new Intl.NumberFormat('en-US');   
+            contract.methods.getMyTime(currentAddr).call().then(res => {
+                $("#app__buns").text(nf.format(res));
+                console.log(res)   
+            })
+            
+        }
+       } catch (error) {
+        console.log(error)
+       } 
+        
+
+}
+
+function lastRebake() {
+    const web3 = new Web3(provider);
+       try {
+        if(contract){
+           
+            contract.methods.lastConstruct(currentAddr).call().then(res => {
+                $("#lastRebake").text(timeConverter(res));
+                console.log(res);      
+            })
+            
+        }
+       } catch (error) {
+        console.log(error)
+       } 
+        
+
+}
+
+function calcuateBakersForCro() {
+    const web3 = new Web3(provider);
+    var amt = document.getElementById('app__inputbnb').value;
+    var wei = web3.utils.toWei(amt);
+       try {
+        if(contract){
+            contract.methods.calculateTimeBuySimple(wei).call().then(v => {     
+                $("#app__rewards").text((v/1440000));
+                   
+            })
+        }
+       } catch (error) {
+        console.log(error)
+       } 
+
 }
 
 
