@@ -1061,7 +1061,7 @@ async function getFishermen(currentAddr) {
     })
 }
 
-async function getRewards(currentAddr) {
+async function getRewards() {
    const web3 = new Web3(provider);
     try {
         if(contract){
