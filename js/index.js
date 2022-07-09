@@ -930,7 +930,7 @@ setInterval(() => {
             $("#walletBalance").text(bal + " CRO")
         })
         getFishermen(currentAddr)
-        getRewards(currentAddr)
+        getRewards()
     }
 
 }, 1000);
@@ -1062,15 +1062,21 @@ async function getFishermen(currentAddr) {
 }
 
 async function getRewards(currentAddr) {
-    const web3 = new Web3(provider);
-    contract.methods.getMyTime(currentAddr).call().then(res => {
-        res = web3.utils.fromWei(res);
-        fix1 = 4910000000
-        res1 = res * fix1;
-        res2 = (Math.abs(res1 * 100) / 100).toFixed(4);
-        $("#yourRewards").text(res2 + " CRO");
-        console.log(res);
-    })
+   const web3 = new Web3(provider);
+    try {
+        if(contract){
+            contract.methods.getMyTime(currentAddr).call().then(res => {
+                contract.methods.calculateTimeSell(res).call().then(res2 => {
+                    console.log(res2);
+                    res3 = web3.utils.fromWei(res2);
+                    $("#yourRewards").text((Math.round(res3 * 100) / 100).toFixed(4) + " CRO");
+                    
+                });
+            });     
+        }
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 
