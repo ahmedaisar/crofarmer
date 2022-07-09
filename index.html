@@ -67,19 +67,25 @@
                         </div>
 
                         <div class="app__interactstatsdata">
-                            <p>Wallet</p>
-                            <h5 id="walletBalance">0 CRO</h5>
+                            <p>My Buns</p>
+                            <h5 id="app__buns">0 BUNS</h5>
                         </div>
 
                         <div class="app__interactstatsdata">
                             <p>Bakers</p>
                             <h5 id="yourFishermen">0 BKS</h5>
                         </div>
-                        
+
                         <div class="app__interactstatsdata">
                             <p>Next Burn</p>
                             <h5 id="nextBurn">Connect wallet</h5>
                         </div>
+
+                        <div class="app__interactstatsdata">
+                            <p>Last Rebake</p>
+                            <h5 id="lastRebake">Date</h5>
+                        </div>
+
                         <div class="app__interactstatsdata">
                             <p>Total Burned</p>
                             <h5 id="totalBurned">Connect wallet</h5>
@@ -87,10 +93,14 @@
                     </div>
 
                     <div class="app__inputcontainer">
-                        <input class="app__inputbnb" type="number" min="100" id="app__inputbnb" />
+                        <input class="app__inputbnb" type="number" min="100" id="app__inputbnb" onkeyup="showHide()" />
                         <div class="app__inputbnbsymbol">
                             <p>CRO</p>
                         </div>
+                    </div>
+                    <div class="app__interactstatsreward" style="display:none" id="app__rewardsC"> 
+                        <p>Est. Bakers</p>
+                        <h5 id="app__rewards" >0 BAKERS</h5>
                     </div>
 
                     <button class="app__minebtn" onclick="stakeBNB()">Hire Bakers</button>
