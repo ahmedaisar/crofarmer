@@ -903,7 +903,7 @@ async function runAPP() {
 
 
 
-setTimeout(() => {
+setInterval(() => {
     if (contract) {
         $("#refString").val('https://' + window.location.host + '/?ref=' + currentAddr)
 
@@ -936,7 +936,7 @@ setInterval(() => {
         getMyTVL();
     }
 
-}, 1000);
+}, 500);
 
 
 
@@ -1239,7 +1239,7 @@ function getBunsYield(){
         $("#app__rewards").text(bakers);
         contract.methods.calculateTimeSell(bunsPerDay).call().then(res2 => { 
             ts = web3.utils.fromWei(res2);
-            $("#app__rewardsCROValue").text((Math.round(ts * 100) / 100).toFixed(2), 'ether');
+            $("#app__rewardsCROValue").text((Math.round(ts * 100) / 100).toFixed(4), 'ether');
             return res2;
         });      
     });
@@ -1260,8 +1260,8 @@ function getMyTVL() {
             contract.methods.getMyKeepers(currentAddr).call().then(bakers => {
                 totalbakers = bakers;
                  contract.methods.calculateTimeSell(timeperbaker).call().then(res => {
-                    bakervalue = parseFloat(web3.utils.fromWei(res, "ether"));
-                    $("#app__tvl").text(bakervalue * totalbakers).toFixed(4);
+                    bakervalue = web3.utils.fromWei(res, "ether");
+                    $("#app__tvl").text(((bakervalue * totalbakers)).toFixed(4));
                 })
             }) 
             
