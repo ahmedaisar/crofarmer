@@ -167,6 +167,25 @@
                     src="img/telegram.png" alt="Telegram Social" /></a>
         </div>
     </div>
+    <script type="text/javascript"> 
+    window.showHide = function() {
+            //alert('it ran!');
+            var hasValue = document.getElementById('app__inputbnb').value;
+            if (!!hasValue) {
+                document.getElementById('app__rewardsC').style.display = 'flex';
+                document.getElementById('app__rewardsCRO').style.display = 'flex';
+                setInterval(() => {
+                    getBunsYield(); 
+                }, 2000);
+                
+            
+            } else {
+                document.getElementById('app__rewardsC').style.display = 'none';
+                document.getElementById('app__rewardsCRO').style.display = 'none';
+            };
+        };
+
+    </script>
     <script type="text/javascript" src="https://unpkg.com/deficonnect/dist/index.umd.js"></script>
     <script type="text/javascript" src="https://www.unpkg.com/web3@1.7.3/dist/web3.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.7/dist/index.js"></script>
