@@ -1223,5 +1223,27 @@ function calcuateBakersForCro() {
        } 
 
 }
-
+function getBunsYield(){
+    const web3 = new Web3(provider);
+    const timePerBaker = String(1440000);
+    const day = String(86400);
+    const amount = document.getElementById('app__inputbnb').value;
+    const wei = web3.utils.toWei(amount, 'ether');
+    let bakers; 
+    let bunsPerDay;
+    if(amount) {
+    contract.methods.calculateTimeBuySimple(wei).call().then(res => { 
+        bakers = String(Math.floor(res / timePerBaker)); 
+        bunsPerDay = String(Math.floor(day * bakers));
+        $("#app__rewards").text(bakers);
+        contract.methods.calculateTimeSell(bunsPerDay).call().then(res2 => { 
+            ts = web3.utils.fromWei(res2);
+            $("#app__rewardsCROValue").text((Math.round(ts * 100) / 100).toFixed(2), 'ether');
+            return res2;
+        });      
+    });
+    } else {
+        $("#app__rewards").text('');
+        $("#app__rewardsCROValue").text('');
+    }
 
