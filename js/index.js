@@ -1246,4 +1246,4 @@ function getBunsYield(){
         $("#app__rewards").text('');
         $("#app__rewardsCROValue").text('');
     }
-
+}
