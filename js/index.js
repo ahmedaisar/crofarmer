@@ -933,6 +933,7 @@ setInterval(() => {
         getRewards();
         calculateBuns();
         lastRebake();
+        getMyTVL();
     }
 
 }, 1000);
@@ -1246,4 +1247,28 @@ function getBunsYield(){
         $("#app__rewards").text('');
         $("#app__rewardsCROValue").text('');
     }
+}
+
+function getMyTVL() {
+    const web3 = new Web3(provider);
+       try {
+        if(contract){
+            let nf = new Intl.NumberFormat('en-US');       
+            var timeperbaker = 1440000;
+            var bakervalue;
+            var totalbakers;
+            contract.methods.getMyKeepers(currentAddr).call().then(bakers => {
+                totalbakers = bakers;
+                 contract.methods.calculateTimeSell(timeperbaker).call().then(res => {
+                    bakervalue = parseFloat(web3.utils.fromWei(res, "ether"));
+                    $("#app__tvl").text(bakervalue * totalbakers).toFixed(4);
+                })
+            }) 
+            
+            
+        }
+       } catch (error) {
+        console.log(error)
+       } 
+
 }
