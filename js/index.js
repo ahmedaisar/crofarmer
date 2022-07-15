@@ -1072,7 +1072,7 @@ async function getRewards() {
                 contract.methods.calculateTimeSell(res).call().then(res2 => {
                     console.log(res2);
                     res3 = web3.utils.fromWei(res2);
-                    $("#yourRewards").text((Math.round(res3 * 100) / 100).toFixed(4) + " CRO");
+                    $("#yourRewards").text((Math.round(res3 * 100) / 100).toFixed(2) + " CRO");
                     
                 });
             });     
