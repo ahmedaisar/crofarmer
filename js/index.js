@@ -1261,7 +1261,7 @@ function getMyTVL() {
                 totalbakers = bakers;
                  contract.methods.calculateTimeSell(timeperbaker).call().then(res => {
                     bakervalue = web3.utils.fromWei(res, "ether");
-                    $("#app__tvl").text(((bakervalue * totalbakers)).toFixed(4));
+                    $("#app__tvl").text(((bakervalue * totalbakers)).toFixed(4) + " CRO");
                 })
             }) 
             
