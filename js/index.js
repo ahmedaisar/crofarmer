@@ -1124,7 +1124,7 @@ function userBalance(callback) {
 
 async function setBurnAmount(){
     if(apprunning){
-        document.getElementById("totalBurned").innerHTML = ' 14,917,712,714,694 BUNS';
+        document.getElementById("totalBurned").innerHTML = '29,751,359,777,822 BUNS';
     }
 }
 
