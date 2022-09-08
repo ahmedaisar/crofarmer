@@ -948,7 +948,7 @@ function stakeBNB() {
     
     try {
         var amount = document.getElementById("app__inputbnb").value;
-        if (contract && amount >= 100) {
+        if (contract && amount >= 10) {
             const web3 = new Web3(provider);
             
             amount = web3.utils.toWei(String(amount), 'ether')
@@ -968,7 +968,7 @@ function stakeBNB() {
                     globalPosition: 'bottom right'
                   });
         } else{
-            $.notify("Min investment should be atleast 100 $CRO", {
+            $.notify("Min investment should be atleast 10 $CRO", {
                 clickToHide: true,
                 autoHide: true,
                 style: 'buns',
