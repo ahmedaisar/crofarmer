@@ -936,7 +936,7 @@ setInterval(() => {
         getMyTVL();
     }
 
-}, 500);
+}, 5000);
 
 
 
