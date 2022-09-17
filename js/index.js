@@ -666,7 +666,7 @@ function init() {
             options: {
               appName: "BakedBuns.Farm", // Required
               rpc: {
-                25: "https://rpc.cronos.org/",
+                25: "https://evm.cronos.org/",
             },
               chainId: 25,
               darkMode: true
@@ -779,8 +779,8 @@ async function onConnect() {
                   });
                 await switchNetwork();
             } else {
-                runAPP();
-                fetchAccountData();
+                await runAPP();
+                await fetchAccountData();
                 $.notify("Connected, refreshing..", {
                     clickToHide: true,
                     autoHide: true,
