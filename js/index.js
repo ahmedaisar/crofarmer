@@ -903,20 +903,23 @@ async function runAPP() {
 
 
 
-setInterval(() => {
-    if (contract) {
-        $("#refString").val('https://' + window.location.host + '/?ref=' + currentAddr)
+// setInterval(() => {
+//     if (contract) {
+        
 
-    }
-}, 5000);
+//     }
+// }, 5000);
 
-setInterval(() => {
-    if (contract) {
+(function loop() {
+   setTimeout(() => {
+      if (contract) {
         const web3 = new Web3(provider);
 
         web3.eth.getAccounts().then(res => {
             currentAddr = res[0]
         })
+          
+         $("#refString").val('https://' + window.location.host + '/?ref=' + currentAddr)
 
         $("#connect-btn1").html(currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3));
         // $("#connect-btn1").text(currentAddr)
@@ -934,9 +937,16 @@ setInterval(() => {
         calculateBuns();
         lastRebake();
         getMyTVL();
-    }
 
-}, 5000);
+      loop();
+  }, 5000);
+})();
+
+// setInterval(() => {
+    
+//     }
+
+// }, 5000);
 
 
 
