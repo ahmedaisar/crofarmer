@@ -895,6 +895,10 @@ async function runAPP() {
     if (networkID == 25) { // 56 - BSC Live. 97 -- BSC Test
         contract = await new web3.eth.Contract(ABI, CONTRACT_ADDRESS)
         apprunning = true;
+        web3.eth.getAccounts().then(res => {
+            currentAddr = res[0];
+            $("#connect-btn1").html(currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3));
+        })
         await setBurnAmount();
         loop();
         console.log(contract)
@@ -914,14 +918,10 @@ function loop() {
    setTimeout(() => {
      
         const web3 = new Web3(provider);
-
-        web3.eth.getAccounts().then(res => {
-            currentAddr = res[0]
-        })
-          
+ 
          $("#refString").val('https://' + window.location.host + '/?ref=' + currentAddr)
 
-        $("#connect-btn1").html(currentAddr.substring(0, 3) + "..." + currentAddr.substring(currentAddr.length - 3));
+        
         // $("#connect-btn1").text(currentAddr)
 
           getContractBalance();
