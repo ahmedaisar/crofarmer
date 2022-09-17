@@ -666,7 +666,7 @@ function init() {
             options: {
               appName: "BakedBuns.Farm", // Required
               rpc: {
-                25: "https://evm.cronos.org/",
+                25: "https://rpc.cronos.org/",
             },
               chainId: 25,
               darkMode: true
