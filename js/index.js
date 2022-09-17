@@ -939,7 +939,7 @@ async function runAPP() {
         getMyTVL();
       }
       loop();
-  }, 5000);
+  }, 1000);
 })();
 
 // setInterval(() => {
