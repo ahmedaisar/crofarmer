@@ -896,7 +896,7 @@ async function runAPP() {
         contract = await new web3.eth.Contract(ABI, CONTRACT_ADDRESS)
         apprunning = true;
         await setBurnAmount();
-       
+        loop();
         console.log(contract)
     }
 }
@@ -910,7 +910,7 @@ async function runAPP() {
 //     }
 // }, 5000);
 
-(function loop() {
+function loop() {
    setTimeout(() => {
       if (contract) {
         const web3 = new Web3(provider);
@@ -940,7 +940,7 @@ async function runAPP() {
 
       loop();
   }, 5000);
-})();
+};
 
 // setInterval(() => {
     
