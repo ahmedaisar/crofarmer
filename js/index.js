@@ -642,7 +642,7 @@ function init() {
             package: WalletConnectProvider,
             options: {
                 rpc: {
-                    25: "https://evm.cronos.org/",
+                    25: "https://rpc.cronos.org/",
                 }
             },
             qrcodeModalOptions: {
@@ -666,7 +666,7 @@ function init() {
             options: {
               appName: "BakedBuns.Farm", // Required
               rpc: {
-                25: "https://evm.cronos.org/",
+                25: "https://rpc.cronos.org/",
             },
               chainId: 25,
               darkMode: true
@@ -939,7 +939,7 @@ function loop() {
         getMyTVL();
       
       loop();
-  }, 1000);
+  }, 1500);
 }
 
 // setInterval(() => {
