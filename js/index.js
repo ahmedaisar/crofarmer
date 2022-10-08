@@ -1068,8 +1068,9 @@ async function getContractBalance() {
 async function getFishermen(currentAddr) {
 
     contract.methods.getMyKeepers(currentAddr).call().then(res => {
+        res = web3.utils.fromWei(res);
         res = (Math.round(res * 100) / 100).toFixed(2);
-        $("#yourFishermen").text(res + " BAKERS");
+        $("#yourFishermen").text(res);
         console.log(res);
     })
 }
