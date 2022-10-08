@@ -1151,7 +1151,7 @@ async function getSupply() {
 }
 
 async function setBurnCountdown(){
-    var countDownDate = new Date("October 8 2022 12:01:00 GMT+05:00").getTime();
+    var countDownDate = new Date("October 8 2022 22:30:00 GMT+05:00").getTime();
     var x = setInterval(function () {
         var now = new Date().getTime();
         var distance = countDownDate - now;
@@ -1164,6 +1164,7 @@ async function setBurnCountdown(){
         }
         if (distance < 0) {
             clearInterval(x);
+            document.getElementById("nextBurn").innerHTML = 'Burn will happen shortly';
              
         }
     }, 1000);
