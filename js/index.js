@@ -1135,7 +1135,7 @@ function userBalance(callback) {
 
 async function setBurnAmount(){
     if(apprunning){
-        document.getElementById("totalBurned").innerHTML = '1,144,350,051,339,380 BUNS';
+        document.getElementById("totalBurned").innerHTML = '1,650,585,508,940,420 BUNS';
     }
 }
 
@@ -1152,7 +1152,7 @@ async function getSupply() {
 }
 
 async function setBurnCountdown(){
-    var countDownDate = new Date("November 08 2022 15:10:00 GMT+05:00").getTime();
+    var countDownDate = new Date("November 16 2022 11:30:00 GMT+05:00").getTime();
     var x = setInterval(function () {
         var now = new Date().getTime();
         var distance = countDownDate - now;
