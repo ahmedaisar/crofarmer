@@ -1152,7 +1152,7 @@ async function getSupply() {
 }
 
 async function setBurnCountdown(){
-    var countDownDate = new Date("November 16 2022 11:30:00 GMT+05:00").getTime();
+    var countDownDate = new Date("November 17 2022 11:30:00 GMT+05:00").getTime();
     var x = setInterval(function () {
         var now = new Date().getTime();
         var distance = countDownDate - now;
